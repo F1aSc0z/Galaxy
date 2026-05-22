@@ -1,0 +1,196 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  font-family: monospace;
+  overflow-x: hidden;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ─── HUD bar ─────────────────────────────────────────────────────────────── */
+.ui {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0,200,255,0.05);
+  border: 1px solid rgba(0,200,255,0.2);
+  border-bottom: none;
+  color: #0cf;
+  font-size: 12px;
+  width: 100%;
+}
+.ui b { color: #fff; }
+
+/* ─── Canvas wrapper (makes canvas responsive) ────────────────────────────── */
+.game-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(0,200,255,0.3);
+  cursor: none;
+  touch-action: none; /* prevent scroll while playing */
+}
+
+/* ─── Overlay (menu / settings / dead) ───────────────────────────────────── */
+.overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(0,0,10,0.82);
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.overlay h1 { font-size: 32px; color: #0cf; text-shadow: 0 0 30px #0cf; letter-spacing: 4px; }
+.overlay p  { color: #aef; font-size: 12px; text-align: center; padding: 0 8px; }
+.overlay .score { font-size: 28px; color: #fff; }
+
+.controls-hint { color: #5af !important; font-size: 11px !important; opacity: 0.8; }
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+.overlay button {
+  background: transparent;
+  border: 2px solid #0cf;
+  color: #0cf;
+  font-size: 15px;
+  padding: 10px 28px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  font-family: monospace;
+}
+.overlay button:hover,
+.overlay button:active { background: rgba(0,200,255,0.15); }
+
+.menu-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-settings {
+  border-color: rgba(0,200,255,0.4) !important;
+  color: rgba(0,200,255,0.7) !important;
+  font-size: 13px !important;
+  padding: 8px 20px !important;
+}
+
+/* ─── Settings screen ─────────────────────────────────────────────────────── */
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.settings-label {
+  color: #aef;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.toggle-group {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(0,200,255,0.4);
+}
+
+.toggle {
+  background: transparent !important;
+  border: none !important;
+  border-right: 1px solid rgba(0,200,255,0.4) !important;
+  color: rgba(0,200,255,0.5) !important;
+  font-size: 13px !important;
+  padding: 8px 22px !important;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-family: monospace;
+  transition: background 0.15s, color 0.15s;
+}
+.toggle:last-child { border-right: none !important; }
+.toggle:hover { background: rgba(0,200,255,0.1) !important; }
+.toggle.active {
+  background: rgba(0,200,255,0.2) !important;
+  color: #0cf !important;
+}
+
+.settings-hint {
+  color: #5af !important;
+  font-size: 12px !important;
+  margin-top: 4px;
+}
+
+/* ─── Leaderboard ─────────────────────────────────────────────────────────── */
+.leaderboard {
+  margin-top: 4px;
+  border: 1px solid rgba(0,200,255,0.25);
+  padding: 10px 16px;
+  min-width: 260px;
+  background: rgba(0,10,30,0.6);
+}
+.lb-title { color: #0cf; font-size: 11px; letter-spacing: 2px; margin-bottom: 8px; text-align: center; }
+.lb-row {
+  display: flex; gap: 8px; align-items: center;
+  font-size: 11px; padding: 3px 0;
+  border-bottom: 1px solid rgba(0,200,255,0.08);
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-rank  { width: 24px; text-align: center; }
+.lb-score { color: #fff; flex: 1; }
+.lb-level { color: #0cf; width: 50px; }
+.lb-date  { color: #567; width: 65px; font-size: 10px; }
+
+/* ─── Mobile fire button ──────────────────────────────────────────────────── */
+.mobile-fire-btn {
+  display: none; /* hidden on desktop */
+}
+
+/* Show only on touch devices */
+@media (pointer: coarse) {
+  .mobile-fire-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(255, 100, 0, 0.2);
+    border: 2px solid rgba(255, 120, 0, 0.7);
+    font-size: 30px;
+    margin-top: 14px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .mobile-fire-btn:active {
+    background: rgba(255, 120, 0, 0.45);
+    transform: scale(0.93);
+  }
+
+  /* Slightly smaller text on mobile for HUD */
+  .ui { font-size: 11px; gap: 8px; }
+  .overlay h1 { font-size: 26px; }
+}
